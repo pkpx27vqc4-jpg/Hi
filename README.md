@@ -1,259 +1,142 @@
-
-<!-- ported by shxyder -->
 <!DOCTYPE html>
+
+
+<!-- Ultimate Game Stash file--> 
+<!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
+	
+
 <html lang="en-us">
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=no"
-  />
-  <title>Obby Slide</title>
+  <head>
+    <meta charset="utf-8">
+    <base href="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/obby-1-jump-per-click/">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  </head>
+  <body style="margin:0;padding:0" class="noselect">
+    <div id="loading-text" style="color: black; font-size: 48px; font-family: cursive; text-align: center; margin-top: 20px;">LOADING...</div>
+    <canvas id="unity-canvas"
+      style="position:fixed;top:0;left:0;width:100%;height:100%;outline:none"></canvas>
 
-  <style>
-    html { box-sizing: border-box; }
-    *, *:before, *:after { box-sizing: inherit; }
-    html, body { height: 100%; width: 100%; margin: 0; padding: 0; background: #231F20; }
-    canvas { display: block; }
-    #unity-container {
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-    #unity-canvas {
-      width: 100%;
-      height: 100%;
-      background: #231F20;
-    }
-    #loading-cover {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: #231F20;
-      z-index: 1000;
-    }
-    #unity-loading-bar {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    #unity-progress-bar-empty {
-      width: 40%;
-      max-width: 400px;
-      height: 24px;
-      margin: 20px;
-      text-align: left;
-      border: 1px solid white;
-      padding: 2px;
-      display: none;
-    }
-    #unity-progress-bar-full {
-      width: 0;
-      height: 100%;
-      background: white;
-      transition: width 0.3s;
-    }
+    <script>
+    const SPLIT_MAP = {"36f91e8ee82d55eec2b86d4158ce720e.wasm": null};
+    </script>
 
-    .spinner, .spinner:after {
-      border-radius: 50%;
-      width: 5em;
-      height: 5em;
-    }
-    .spinner {
-      margin: 10px;
-      font-size: 10px;
-      position: relative;
-      text-indent: -9999em;
-      border-top: 1.1em solid rgba(255,255,255,0.2);
-      border-right: 1.1em solid rgba(255,255,255,0.2);
-      border-bottom: 1.1em solid rgba(255,255,255,0.2);
-      border-left: 1.1em solid #ffffff;
-      transform: translateZ(0);
-      animation: spinner-spin 1.1s infinite linear;
-    }
-    @keyframes spinner-spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    #splash-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      pointer-events: none;
-      display: flex;
-      justify-content: center;
-      z-index: 2000;
-      opacity: 0;
-      transition: opacity 0.6s ease;
-    }
-    #splash-overlay.visible { opacity: 1; }
-    #splash-overlay.hiding { opacity: 0; }
-    #splash-overlay img {
-      margin-top: 10px;
-      max-width: 180px;
-      height: auto;
-      cursor: pointer;
-      pointer-events: auto;
-      display: block;
-    }
-
-    #skip-button {
-      display: none;
-      padding: 15px 50px;
-      font-size: 20px;
-      background: #ffffff;
-      color: #231F20;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      margin-top: 20px;
-      font-weight: bold;
-      transition: all 0.3s;
-      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
-    }
-    #skip-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    .pulse-animation { animation: pulse 1.5s infinite; }
-
-    body {
-      overflow: hidden;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      user-select: none;
-      -webkit-tap-highlight-color: rgba(0,0,0,0);
-    }
-  </style>
-
-  <script type="text/javascript">
-    window.console = {
-      log: function () {}, warn: function () {}, error: function () {},
-      info: function () {}, debug: function () {}, trace: function () {},
-      table: function () {}, assert: function () {}
-    };
-  </script>
-</head>
-<body class="dark">
-  <div id="unity-container">
-    <canvas id="unity-canvas"></canvas>
-  </div>
-
-  <div id="splash-overlay" class="visible">
-    <img id="splash-image" src="https://cdn.jsdelivr.net/gh/shayderrr/portsv2@main/mrdude/TemplateData/0118.png" alt="Splash">
-  </div>
-
-  <div id="loading-cover">
-    <div id="unity-loading-bar">
-      <div class="spinner"></div>
-      <div id="unity-progress-bar-empty">
-        <div id="unity-progress-bar-full"></div>
-      </div>
-      <button id="skip-button" onclick="startGame()">▶ PLAY</button>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/gh/shayderrr/portsv2@main/itgotsomewabisabi/cdn.jsdelivr.net/gh/new-ast/baseline%406ee848357def2ddafd4842db987a6510fb8c3887/lib/min.js"></script>
-  <script>
-    const buildUrl = "https://cdn.jsdelivr.net/gh/shayderrr/portsv2@main/itgotsomewabisabi/cdn.jsdelivr.net/gh/new-ast/baseline%406ee848357def2ddafd4842db987a6510fb8c3887/lib";
-    const config = {
-      dataUrl:        buildUrl + "/cas-gm.data.br",
-      frameworkUrl:   buildUrl + "/cas-gm.framework.js",
-      codeUrl:        buildUrl + "/cas-gm.wasm.br",
-      innerLoaderUrl: buildUrl + "/loader.js",
-      streamingAssetsUrl: "StreamingAssets"
-    };
-
-    const container        = document.querySelector("#unity-container");
-    const canvas           = document.querySelector("#unity-canvas");
-    const loadingCover     = document.querySelector("#loading-cover");
-    const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
-    const progressBarFull  = document.querySelector("#unity-progress-bar-full");
-    const spinner          = document.querySelector(".spinner");
-    const skipButton       = document.querySelector("#skip-button");
-    const splashOverlay    = document.querySelector("#splash-overlay");
-    const splashImage      = document.querySelector("#splash-image");
-
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-      container.className = "unity-mobile";
-    }
-
-    splashImage.addEventListener("click", function() {
-      window.open("https://shayderrr.github.io/shxyder/", "_blank");
-    });
-
-    function hideSplash() {
-      if (!splashOverlay) return;
-      splashOverlay.classList.add("hiding");
-      setTimeout(() => {
-        splashOverlay.style.display = "none";
-      }, 600);
-    }
-
-    function startGame() {
-      hideSplash();
-      loadingCover.style.display = "none";
-      FocusGame();
-    }
-
-    function FocusGame() {
-      window.focus();
-      try { canvas.focus(); } catch (e) {}
-    }
-
-    document.addEventListener("contextmenu", e => e.preventDefault());
-    window.addEventListener("pointerdown", FocusGame);
-    window.addEventListener("touchstart", FocusGame);
-
-    let ygGameInstance = null;
-    let initGame = false;
-
-    document.addEventListener("visibilitychange", function () {
-      if (!initGame) return;
-      if (document.hidden) {
-        YG2Instance("SetFocusWindowGame", "false");
-      } else {
-        YG2Instance("SetFocusWindowGame", "true");
+    <script>
+    async function mergeParts(baseUrl) {
+      const parts = [];
+      for (let i = 1; i <= 99; i++) {
+        const testUrl = baseUrl + ".part" + i;
+        try {
+          const head = await fetch(testUrl, { method: "HEAD" });
+          if (!head.ok) break;
+          parts.push(testUrl);
+        } catch { break; }
       }
-    });
+      if (parts.length === 0) return baseUrl;
 
-    startUnityBr(canvas, config, (progress) => {
-      spinner.style.display = "none";
-      progressBarEmpty.style.display = "block";
-      const adjustedProgress = Math.max(progress, 0.05);
-      progressBarFull.style.width = (100 * adjustedProgress) + "%";
-    }).then((unityInstance) => {
-      ygGameInstance = unityInstance;
-      initGame = true;
-      progressBarEmpty.style.display = "none";
-      skipButton.style.display = "block";
-      skipButton.classList.add("pulse-animation");
-    }).catch((message) => {
-      console.error(message);
-    });
+      const buffers = await Promise.all(parts.map(async (u) => {
+        const r = await fetch(u);
+        if (!r.ok) throw new Error("Failed part " + u);
+        return new Uint8Array(await r.arrayBuffer());
+      }));
 
-    function YG2Instance(method, arg) {
-      if (ygGameInstance == null) return;
-      if (arg === undefined) {
-        ygGameInstance.SendMessage("YG2Instance", method);
-      } else {
-        ygGameInstance.SendMessage("YG2Instance", method, arg);
-      }
+      const total = buffers.reduce((a, b) => a + b.length, 0);
+      const merged = new Uint8Array(total);
+      let offset = 0;
+      for (const b of buffers) { merged.set(b, offset); offset += b.length; }
+
+      return URL.createObjectURL(new Blob([merged]));
     }
-  </script>
-</body>
-</html>```
+
+    async function preMergeAll() {
+      const map = {};
+      const files = Object.entries(SPLIT_MAP);
+      const total = files.length;
+      let done = 0;
+
+      const loadingText = document.getElementById("loading-text");
+
+      for (const [file, _] of files) {
+        const merged = await mergeParts("Build/" + file);
+        map[file] = merged;
+        done++;
+        const percent = Math.floor((done / total) * 100);
+        loadingText.innerText = `LOADING... ${percent}%`;
+        console.log("Premerged:", file, "→", merged);
+      }
+
+      loadingText.style.display = "none";
+
+      return map;
+    }
+
+    (async () => {
+      const mergedMap = await preMergeAll();
+      window.SPLIT_MAP = mergedMap;
+      const origFetch = window.fetch;
+      window.fetch = async function(resource, options) {
+        if (typeof resource === "string") {
+          const key = resource.split("/").pop();
+          if (mergedMap[key]) {
+            console.log("Redirect fetch:", key);
+            return origFetch(mergedMap[key], options);
+          }
+          if (resource.includes("StreamingAssets")) {
+            return origFetch((document.querySelector('base').href !== null ? document.querySelector('base').href+"/" : "") + "StreamingAssets/"+resource.split("/StreamingAssets/")[1])
+          }
+        }
+        return origFetch(resource, options);
+      };
+
+      const OrigXHR = window.XMLHttpRequest;
+      window.XMLHttpRequest = function() {
+        const xhr = new OrigXHR();
+        const origOpen = xhr.open;
+        xhr.open = function(method, url, ...rest) {
+          const key = url.split("/").pop();
+          if (mergedMap[key]) {
+            console.log("Redirect XHR:", key);
+            origOpen.call(xhr, method, mergedMap[key], ...rest);
+          } else {
+            origOpen.call(xhr, method, url, ...rest);
+          }
+        };
+        return xhr;
+      };
+
+      const canvas = document.querySelector("#unity-canvas");
+      const loaderUrl = "Build/7a2dbded24d57e056180125b1583e7c4.loader.js";
+      const config = {
+        dataUrl: "Build/4d763f2467fdcb90095f1bbd9e20b6f0.data",
+        frameworkUrl: "Build/26b4806e6bb24735009d7061c5bd6586.framework.js",
+        codeUrl: "Build/36f91e8ee82d55eec2b86d4158ce720e.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Obby: +1 Jump per Click",
+        productName: "Obby: +1 Jump per Click",
+        productVersion: "1.0.0"
+      };
+
+      const script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {}).then((unityInstance) => {
+          window.gameInstance = unityInstance;
+        }).catch((message) => alert(message));
+      };
+      document.body.appendChild(script);
+    })();
+    </script>
+
+    <script>
+    function resizeCanvas() {
+      const canvas = document.getElementById("unity-canvas");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+    }
+    window.addEventListener("load", resizeCanvas);
+    window.addEventListener("resize", resizeCanvas);
+    </script>
+  </body>
+</html>
