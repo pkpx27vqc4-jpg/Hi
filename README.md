@@ -3,22 +3,23 @@
 
 <!-- Ultimate Game Stash file--> 
 <!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
-	
+
+
 
 <html lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <base href="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/obby-1-jump-per-click/">
+    <base href="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/bullet-force-multiplayer/"> 
+    <meta charset="utf-8"> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   </head>
   <body style="margin:0;padding:0" class="noselect">
-    <div id="loading-text" style="color: black; font-size: 48px; font-family: cursive; text-align: center; margin-top: 20px;">LOADING...</div>
+    <div id="loading-text" style="color: black; font-size: 48px; font-family: cursive; text-align: center; margin-top: 20px;">LOADING... Takes a long time</div>
     <canvas id="unity-canvas"
       style="position:fixed;top:0;left:0;width:100%;height:100%;outline:none"></canvas>
 
     <script>
-    const SPLIT_MAP = {"36f91e8ee82d55eec2b86d4158ce720e.wasm": null};
+    const SPLIT_MAP = {"584aaab0eb92d84ef26110ca5439bc54.wasm.gz": null, "7edaab9530d578d742b70ec34add0032.data.gz": null};
     </script>
 
     <script>
@@ -105,14 +106,14 @@
       };
 
       const canvas = document.querySelector("#unity-canvas");
-      const loaderUrl = "Build/7a2dbded24d57e056180125b1583e7c4.loader.js";
+      const loaderUrl = "Build/bb0d9ecdb05db3e84da20bd14a4f84dc.loader.js";
       const config = {
-        dataUrl: "Build/4d763f2467fdcb90095f1bbd9e20b6f0.data",
-        frameworkUrl: "Build/26b4806e6bb24735009d7061c5bd6586.framework.js",
-        codeUrl: "Build/36f91e8ee82d55eec2b86d4158ce720e.wasm",
+        dataUrl: "Build/7edaab9530d578d742b70ec34add0032.data.gz",
+        frameworkUrl: "Build/fd74eec22ed0b1f79484c6a782ad39af.framework.js",
+        codeUrl: "Build/584aaab0eb92d84ef26110ca5439bc54.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "Obby: +1 Jump per Click",
-        productName: "Obby: +1 Jump per Click",
+        companyName: "Bullet Force",
+        productName: "Bullet Force",
         productVersion: "1.0.0"
       };
 
