@@ -1,37 +1,149 @@
+<!DOCTYPE html>
+
+
+
 <!-- Ultimate Game Stash file--> 
 <!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
 
-<!DOCTYPE html>
-<html lang="en">
 
+<html lang="en-us">
 <head>
-	<base href="https://cdn.jsdelivr.net/gh/genizy/fnaf@latest/4-halloween/">
-    <link rel="stylesheet" type="text/css" href="style.css"/>
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="HandheldFriendly" content="true" />
-    <title>Five Nights at Freddy's 4 Halloween</title>
+  <meta charset="utf-8">
+   <base href="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/bad-parenting/">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Unity WebGL Player | Bad Parenting 1</title>
+  <link rel="shortcut icon" href="TemplateData/favicon.ico">
+  <link rel="stylesheet" href="TemplateData/style.css">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+    #unity-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+    }
+    #unity-canvas {
+      width: 100%;
+      height: 100%;
+      background: #000;
+    }
+    #unity-loading-bar {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+      height: 20px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    #unity-progress-bar-full {
+      height: 100%;
+      width: 0%;
+      background: #09f;
+      transition: width 0.2s ease;
+    }
+  </style>
 </head>
-
 <body>
-    <div style="display: inline-block; -webkit-user-select: none; text-align: left">
-        <canvas id="MMFCanvas" width="1280" height="720"> Your browser does not support Canvas, Please try again. </canvas>
-    </div>
-    <div id="progress-container">
-        <div style="margin-bottom: 6px;">Downloading... <span id="download-text">0%</span></div>
-        <div style="width: 100%; background: #444; border-radius: 6px; overflow: hidden;">
-            <div id="download-bar" style="height: 10px; background: #3b82f6; width: 0%; transition: width 0.2s;"></div>
-        </div>
-        <div style="margin: 12px 0 6px;">Extracting... <span id="extract-text">0%</span></div>
-        <div style="width: 100%; background: #444; border-radius: 6px; overflow: hidden;">
-            <div id="extract-bar" style="height: 10px; background: #10b981; width: 0%; transition: width 0.2s;"></div>
-        </div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="main.js"></script>
-</body>
+  <div id="unity-container">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
 
+    <div id="unity-loading-bar">
+      <div id="unity-progress-bar-full"></div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.querySelector("#unity-canvas");
+    const loadingBar = document.querySelector("#unity-loading-bar");
+    const progressBarFull = document.querySelector("#unity-progress-bar-full");
+
+    function unityShowBanner(msg, type) {
+      // no need for errors
+    }
+
+    const buildUrl = "Build";
+    const loaderUrl = buildUrl + "/Build.loader.js";
+
+    async function loadSplitData(baseUrl, parts) {
+      const chunks = [];
+      for (let i = 1; i <= parts; i++) {
+        const partUrl = `${baseUrl}.part${i}`;
+        const response = await fetch(partUrl);
+        if (!response.ok) throw new Error(`Failed to load ${partUrl}`);
+        const chunk = await response.arrayBuffer();
+        chunks.push(chunk);
+        progressBarFull.style.width = (i / parts) * 30 + "%";
+      }
+      const mergedBlob = new Blob(chunks);
+      return URL.createObjectURL(mergedBlob);
+    }
+
+    const config = {
+      dataUrl: buildUrl + "/Build.data",
+      frameworkUrl: buildUrl + "/Build.framework.js",
+      codeUrl: buildUrl + "/Build.wasm",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "twoootwo",
+      productName: "Bad Parenting 1",
+      productVersion: "1.0",
+      showBanner: unityShowBanner,
+    };
+
+    // Make the canvas dynamically fit the screen
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    loadingBar.style.display = "block";
+
+    Promise.all([
+      loadSplitData("Build/Build.wasm", 2),
+      loadSplitData("Build/Build.data", 3)
+    ])
+    .then(([wasmUrl, dataUrl]) => {
+      config.codeUrl = wasmUrl;
+      config.dataUrl = dataUrl;
+
+      const script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 30 + (70 * progress) + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          window.addEventListener("click", () => {
+            unityInstance.SetFullscreen(1);
+          });
+          URL.revokeObjectURL(wasmUrl);
+          URL.revokeObjectURL(dataUrl);
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    })
+    .catch((error) => {
+      alert("Failed to load game data: " + error.message);
+    });
+  </script>
+</body>
 </html>
