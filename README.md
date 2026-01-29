@@ -1,149 +1,223 @@
 <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<base href="https://cdn.jsdelivr.net/gh/playgroundfree/playgroundfree.github.io@main/bfdi-branches/cdn/gh/genizy/web-port%40main/bfdi-branches/">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+		<title>BFDI: Branches</title>
+		<style>
+html, body, #canvas {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
 
+body {
+	color: white;
+	background-color: black;
+	overflow: hidden;
+	touch-action: none;
+}
 
+#canvas {
+	display: block;
+}
 
-<!-- Ultimate Game Stash file--> 
-<!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
+#canvas:focus {
+	outline: none;
+}
 
+#status, #status-splash, #status-progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
 
-<html lang="en-us">
-<head>
-  <meta charset="utf-8">
-   <base href="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/bad-parenting/">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Unity WebGL Player | Bad Parenting 1</title>
-  <link rel="shortcut icon" href="TemplateData/favicon.ico">
-  <link rel="stylesheet" href="TemplateData/style.css">
+#status, #status-splash {
+	top: 0;
+	bottom: 0;
+}
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #000;
-    }
-    #unity-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #000;
-    }
-    #unity-canvas {
-      width: 100%;
-      height: 100%;
-      background: #000;
-    }
-    #unity-loading-bar {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 50%;
-      height: 20px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    #unity-progress-bar-full {
-      height: 100%;
-      width: 0%;
-      background: #09f;
-      transition: width 0.2s ease;
-    }
-  </style>
-</head>
-<body>
-  <div id="unity-container">
-    <canvas id="unity-canvas" tabindex="-1"></canvas>
+#status {
+	background-color: #000000;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+}
 
-    <div id="unity-loading-bar">
-      <div id="unity-progress-bar-full"></div>
-    </div>
-  </div>
+#status-splash {
+	max-height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
 
-  <script>
-    const canvas = document.querySelector("#unity-canvas");
-    const loadingBar = document.querySelector("#unity-loading-bar");
-    const progressBarFull = document.querySelector("#unity-progress-bar-full");
+#status-splash.show-image--false {
+	display: none;
+}
 
-    function unityShowBanner(msg, type) {
-      // no need for errors
-    }
+#status-splash.fullsize--true {
+	height: 100%;
+	width: 100%;
+	object-fit: contain;
+}
 
-    const buildUrl = "Build";
-    const loaderUrl = buildUrl + "/Build.loader.js";
+#status-splash.use-filter--false {
+	image-rendering: pixelated;
+}
 
-    async function loadSplitData(baseUrl, parts) {
-      const chunks = [];
-      for (let i = 1; i <= parts; i++) {
-        const partUrl = `${baseUrl}.part${i}`;
-        const response = await fetch(partUrl);
-        if (!response.ok) throw new Error(`Failed to load ${partUrl}`);
-        const chunk = await response.arrayBuffer();
-        chunks.push(chunk);
-        progressBarFull.style.width = (i / parts) * 30 + "%";
-      }
-      const mergedBlob = new Blob(chunks);
-      return URL.createObjectURL(mergedBlob);
-    }
+#status-progress, #status-notice {
+	display: none;
+}
 
-    const config = {
-      dataUrl: buildUrl + "/Build.data",
-      frameworkUrl: buildUrl + "/Build.framework.js",
-      codeUrl: buildUrl + "/Build.wasm",
-      streamingAssetsUrl: "StreamingAssets",
-      companyName: "twoootwo",
-      productName: "Bad Parenting 1",
-      productVersion: "1.0",
-      showBanner: unityShowBanner,
-    };
+#status-progress {
+	bottom: 10%;
+	width: 50%;
+	margin: 0 auto;
+}
 
-    // Make the canvas dynamically fit the screen
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
+#status-notice {
+	background-color: #5b3943;
+	border-radius: 0.5rem;
+	border: 1px solid #9b3943;
+	color: #e0e0e0;
+	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
+	line-height: 1.3;
+	margin: 0 2rem;
+	overflow: hidden;
+	padding: 1rem;
+	text-align: center;
+	z-index: 1;
+}
+		</style>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="bfdi.icon.png" />
+<link rel="apple-touch-icon" href="bfdi.apple-touch-icon.png"/>
 
-    loadingBar.style.display = "block";
+	</head>
+	<body>
+		<div id="loading-text" style="color: white; font-family: cursive; font-size: 48px; text-align: center; margin-top: 20px;">LOADING...</div>
+		<canvas id="canvas">
+			Your browser does not support the canvas tag.
+		</canvas>
 
-    Promise.all([
-      loadSplitData("Build/Build.wasm", 2),
-      loadSplitData("Build/Build.data", 3)
-    ])
-    .then(([wasmUrl, dataUrl]) => {
-      config.codeUrl = wasmUrl;
-      config.dataUrl = dataUrl;
+		<noscript>
+			Your browser does not support JavaScript.
+		</noscript>
 
-      const script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 30 + (70 * progress) + "%";
-        }).then((unityInstance) => {
-          loadingBar.style.display = "none";
-          window.addEventListener("click", () => {
-            unityInstance.SetFullscreen(1);
-          });
-          URL.revokeObjectURL(wasmUrl);
-          URL.revokeObjectURL(dataUrl);
-        }).catch((message) => {
-          alert(message);
-        });
-      };
-      document.body.appendChild(script);
-    })
-    .catch((error) => {
-      alert("Failed to load game data: " + error.message);
-    });
-  </script>
-</body>
+		<div id="status">
+			<img id="status-splash" class="show-image--false fullsize--true use-filter--true" src="bfdi.png" alt="">
+			<progress id="status-progress"></progress>
+			<div id="status-notice"></div>
+		</div>
+
+		<script src="bfdi.js"></script>
+		<script src="main.js"></script>
+		<script>
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"bfdi","experimentalVK":false,"fileSizes":{"bfdi.pck":230552576,"bfdi.wasm":51784311},"focusCanvas":true,"gdextensionLibs":[]};
+const GODOT_THREADS_ENABLED = false;
+const engine = new Engine(GODOT_CONFIG);
+
+window.godotRunStart = function() {
+	const statusOverlay = document.getElementById('status');
+	const statusProgress = document.getElementById('status-progress');
+	const statusNotice = document.getElementById('status-notice');
+
+	document.getElementById('loading-text').remove();
+	let initializing = true;
+	let statusMode = '';
+
+	function setStatusMode(mode) {
+		if (statusMode === mode || !initializing) {
+			return;
+		}
+		if (mode === 'hidden') {
+			statusOverlay.remove();
+			initializing = false;
+			return;
+		}
+		statusOverlay.style.visibility = 'visible';
+		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
+		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
+		statusMode = mode;
+	}
+
+	function setStatusNotice(text) {
+		while (statusNotice.lastChild) {
+			statusNotice.removeChild(statusNotice.lastChild);
+		}
+		const lines = text.split('\n');
+		lines.forEach((line) => {
+			statusNotice.appendChild(document.createTextNode(line));
+			statusNotice.appendChild(document.createElement('br'));
+		});
+	}
+
+	function displayFailureNotice(err) {
+		console.error(err);
+		if (err instanceof Error) {
+			setStatusNotice(err.message);
+		} else if (typeof err === 'string') {
+			setStatusNotice(err);
+		} else {
+			setStatusNotice('An unknown error occurred.');
+		}
+		setStatusMode('notice');
+		initializing = false;
+	}
+
+	const missing = Engine.getMissingFeatures({
+		threads: GODOT_THREADS_ENABLED,
+	});
+
+	if (missing.length !== 0) {
+		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
+			let serviceWorkerRegistrationPromise;
+			try {
+				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
+			} catch (err) {
+				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
+			}
+			// There's a chance that installing the service worker would fix the issue
+			Promise.race([
+				serviceWorkerRegistrationPromise.then((registration) => {
+					if (registration != null) {
+						return Promise.reject(new Error('Service worker already exists.'));
+					}
+					return registration;
+				}).then(() => engine.installServiceWorker()),
+				// For some reason, `getRegistration()` can stall
+				new Promise((resolve) => {
+					setTimeout(() => resolve(), 2000);
+				}),
+			]).then(() => {
+				// Reload if there was no error.
+				window.location.reload();
+			}).catch((err) => {
+				console.error('Error while registering service worker:', err);
+			});
+		} else {
+			// Display the message as usual
+			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
+			displayFailureNotice(missingMsg + missing.join('\n'));
+		}
+	} else {
+		setStatusMode('progress');
+		engine.startGame({
+			'onProgress': function (current, total) {
+				if (current > 0 && total > 0) {
+					statusProgress.value = current;
+					statusProgress.max = total;
+				} else {
+					statusProgress.removeAttribute('value');
+					statusProgress.removeAttribute('max');
+				}
+			},
+		}).then(() => {
+			setStatusMode('hidden');
+		}, displayFailureNotice);
+	}
+};
+		</script>
+	</body>
 </html>
