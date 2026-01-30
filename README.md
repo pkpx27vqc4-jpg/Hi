@@ -1,93 +1,127 @@
-<!DOCTYPE html>
+<!-- Ultimate Game Stash file--> 
+<!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
+
+
+
 <html lang="en-us">
+  <base href="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/drift-hunters/">
   <head>
-      <base href = "https://cdn.jsdelivr.net/gh/CoolDude2349/everything@main/funnybattle2/">
     <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
+    <title>Google</title>
+    <meta name="description" content="Drift Hunters is an online 3D car drifting game. Race on multiple challenging racetracks and customize your cars.">
+    <script type="text/javascript" src="/cloak.js"></script>
+  <meta name="robots" content="noindex,nofollow" />
+    <style>
+      body {
+  margin: 0;
+  padding: 0;
+}
+.webgl-content * {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.webgl-content {
+  position: absolute;
+}
+.webgl-content,
+#gameContainer,
+#unityContainer,
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+.webgl-content .logo,
+.progress {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.webgl-content .logo {
+  background: url("progressLogo.Light.png") no-repeat center/contain;
+  width: 354px;
+  height: 130px;
+}
+.webgl-content .progress {
+  height: 18px;
+  width: 141px;
+  margin-top: 90px;
+}
+.webgl-content .progress .empty {
+  background: url("progressEmpty.Light.png") no-repeat right/cover;
+  float: right;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+.webgl-content .progress .full {
+  background: url("progressFull.Light.png") no-repeat left/cover;
+  float: left;
+  width: 0%;
+  height: 100%;
+  display: inline-block;
+}
+.webgl-content .logo.Dark {
+  background-image: url(progressLogo.Dark.png);
+}
+.webgl-content .progress.Dark .empty {
+  background-image: url(progressEmpty.Dark.png);
+}
+.webgl-content .progress.Dark .full {
+  background-image: url(progressFull.Dark.png);
+}
+.webgl-content .footer {
+  margin-top: 5px;
+  height: 38px;
+  line-height: 38px;
+  font-family: Helvetica, Verdana, Arial, sans-serif;
+  font-size: 18px;
+}
+.webgl-content .footer .webgl-logo,
+.title,
+.fullscreen {
+  height: 100%;
+  display: inline-block;
+  background: transparent center no-repeat;
+}
+.webgl-content .footer .webgl-logo {
+  background-image: url(webgl-logo.png);
+  width: 204px;
+  float: left;
+}
+.webgl-content .footer .title {
+  margin-right: 10px;
+  float: right;
+}
+.webgl-content .footer .fullscreen {
+  background-image: url(fullscreen.png);
+  width: 38px;
+  float: right;
+}
+    </style>
   </head>
-  <body class="dark">
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas"></canvas>
-    </div>
-    <div id="loading-cover" style="display:none;">
-      <div id="unity-loading-bar">
-        <div id="unity-logo"><img src="logo.png"></div>
-        <div id="unity-progress-bar-empty" style="display: none;">
-          <div id="unity-progress-bar-full"></div>
-        </div>
-        <div class="spinner"></div>
-      </div>
-    </div>
-    <div id="unity-fullscreen-button" style="display: none;"></div>
-    <script>
-      const hideFullScreenButton = "1";
-      const buildUrl = "Build";
-      const loaderUrl = buildUrl + "/FunnyBattle2_GD.loader-edit2.js";
-      const config = {
-        dataUrl: buildUrl + "/FunnyBattle2_GD.data.unityweb",
-        frameworkUrl: buildUrl + "/FunnyBattle2_GD.framework.js.unityweb",
-        codeUrl: buildUrl + "/FunnyBattle2_GD.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "GoGoMan",
-        productName: "Squid Battle",
-        productVersion: "0.1",
-      };
-
-      const container = document.querySelector("#unity-container");
-      const canvas = document.querySelector("#unity-canvas");
-      const loadingCover = document.querySelector("#loading-cover");
-      const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
-      const progressBarFull = document.querySelector("#unity-progress-bar-full");
-      const fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      const spinner = document.querySelector('.spinner');
-
-      const canFullscreen = (function() {
-        for (const key of [
-            'exitFullscreen',
-            'webkitExitFullscreen',
-            'webkitCancelFullScreen',
-            'mozCancelFullScreen',
-            'msExitFullscreen',
-          ]) {
-          if (key in document) {
-            return true;
-          }
-        }
-        return false;
-      }());
-
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        container.className = "unity-mobile";
-        config.devicePixelRatio = 1;
-      }
-      canvas.style.background = "url('" + buildUrl + "/FunnyBattle2_GD.jpg') center / cover";
-      loadingCover.style.display = "";
-
-      const script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          spinner.style.display = "none";
-          progressBarEmpty.style.display = "";
-          progressBarFull.style.width = `${100 * progress}%`;
-        }).then((unityInstance) => {
-          loadingCover.style.display = "none";
-          if (canFullscreen) {
-            if (!hideFullScreenButton) {
-              fullscreenButton.style.display = "";
-            }
-            fullscreenButton.onclick = () => {
-              unityInstance.SetFullscreen(1);
-            };
-          }
-        }).catch((message) => {
-          alert(message);
-        });
-      };
-      document.body.appendChild(script);
-    </script>
+  <body style="margin: 0 auto; overflow: hidden">
+  
+  
+    <div class="webgl-content">
+      <div id="gameContainer" style="width: 100%; height: 100%; margin: 0;"></div>
+  </div>
+    
   </body>
+  <script src="UnityLoader2019.js"></script>
+  <script>
+  
+    var gameInstance = UnityLoader.instantiate("gameContainer", "dh.json");
+
+    function UnityProgress(gameInstance, progress) {
+      if (!gameInstance.Module) {
+        return;
+      }
+
+    }
+  </script>
+
 </html>
