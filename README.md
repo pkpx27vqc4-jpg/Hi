@@ -4,4 +4,183 @@
 
 
 
-<html lang="en"> <head> <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <meta http-equiv="pragma" content="no-cache"/> <meta name="apple-mobile-web-app-capable" content="yes" /> <meta name ="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /> <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /> <meta charset="utf-8"/> <!-- Set the title bar of the page --> <title>Created with GameMaker: Studio</title> <!-- Set the background colour of the document --> <style> body { background: #0; color:#cccccc; margin: 0px; padding: 0px; border: 0px; } canvas { width: 100vw; display: block; } :-webkit-full-screen #canvas { width: 100%; height: 100%; } div.gm4html5_div_class { margin: 0px; padding: 0px; border: 0px; } /* START - Login Dialog Box */ div.gm4html5_login { padding: 20px; position: absolute; border: solid 2px #000000; background-color: #404040; color:#00ff00; border-radius: 15px; box-shadow: #101010 20px 20px 40px; } div.gm4html5_cancel_button { float: right; } div.gm4html5_login_button { float: left; } div.gm4html5_login_header { text-align: center; } /* END - Login Dialog Box */ :-webkit-full-screen { width: 100%; height: 100%; } </style> </head> <body> <div class="gm4html5_div_class" id="gm4html5_div_id"> <!-- Create the canvas element the game draws to --> <canvas id="canvas" width="1024" height="375" > <p>Your browser doesn't support HTML5 canvas.</p> </canvas> </div> <!-- Run the game code --> <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/bessiegasbarro/Rocked@8d9f4127e770f8d22db3153c305916ccf3ceb9f8/Rl2D.js"></script> <script>window.onload = GameMaker_Init;</script> </body> </html> <div style="text-align: center;"><span style="background-color: transparent;"><b style=""><font size="3" color="#000">If the keys do not work, then click on this text and continue playing. </font></b></span></div>
+</style><script src="https://26515722-282596139816136697.preview.editmysite.com/uploads/b/7547235-562404422326578714/files/offlineClient.js"></script><style type="text/css">#button {
+  display:none;
+}
+.imgb_vis {
+  animation: imgb-animation 7s linear;
+}
+@keyframes imgb-animation {
+  10% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(100px);
+  }
+  90% {
+    transform: translateX(100px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}</style></head><body dir="ltr" style="cursor: auto;"> 
+	<div id="fb-root"></div>
+	
+	<script>
+
+ function On_GameLoaded()
+  {
+    isGameLoaded = true;
+  }
+  
+	  function Show_Ads()
+  {
+    c2_callFunction("On_GameResumed");
+    showad1();
+
+  }
+
+	// Issue a warning if trying to preview an exported project on disk.
+	(function(){
+		// Check for running exported on file protocol
+		if (window.location.protocol.substr(0, 4) ==="file")
+		{
+			alert("Exported games won't work until you upload them. (When running on the file:/// protocol, browsers block many features from working for security reasons.)");
+		}
+	})();
+	</script>
+	
+	<!-- The canvas must be inside a div called c2canvasdiv -->
+	<div id="c2canvasdiv" style="width: 1262px; height: 928px; margin-left: 0px; margin-top: 0px;">
+	
+		<!-- The canvas the project will render to.  If you change its ID, don't forget to change the
+		ID the runtime looks for in the jQuery events above (ready() and cr_sizeCanvas()). -->
+		<canvas height="928" id="c2canvas" width="1262" style="width: 1262px; height: 928px;">
+			<!-- This text is displayed if the visitor's browser does not support HTML5.
+			You can change it, but it is a good idea to link to a description of a browser
+			and provide some links to download some popular HTML5-compatible browsers. -->
+			<h1>Your browser does not appear to support HTML5.  Try upgrading your browser to the latest version.  <a href="http://www.whatbrowser.org">What is a browser?</a>
+			<br><br><a href="http://www.microsoft.com/windows/internet-explorer/default.aspx">Microsoft Internet Explorer</a><br>
+			<a href="http://www.mozilla.com/firefox/">Mozilla Firefox</a><br>
+			<a href="http://www.google.com/chrome/">Google Chrome</a><br>
+			<a href="http://www.apple.com/safari/download/">Apple Safari</a></h1>
+		</canvas>
+		
+	<input type="text" id="" autocomplete="off" placeholder="Your Name Here" title="" spellcheck="false" style="position: absolute; top: 432px; left: 436px; width: 373px; height: 35px; border: none; background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); font-size: 20px; font-family: Oswald; padding: 10px; border-radius: 100px;"></div>
+	
+	<!-- Pages load faster with scripts at the bottom -->
+	
+	<!-- Construct 2 exported games require jQuery. -->
+	<script src="https://26515722-282596139816136697.preview.editmysite.com/uploads/b/7547235-562404422326578714/files/jquery-2.1.1.min.js"></script>
+
+
+	
+    <!-- The runtime script.  You can rename it, but don't forget to rename the reference here as well.
+    This file will have been minified and obfuscated if you enabled "Minify script" during export. -->
+	<script src="https://26515722-282596139816136697.preview.editmysite.com/uploads/b/7547235-562404422326578714/files/c2runtime.js"></script>
+
+    <script>
+		// Start the Construct 2 project running on window load.
+		jQuery(document).ready(function ()
+		{			
+			// Create new runtime using the c2canvas
+			cr_createRuntime("c2canvas");
+		});
+		
+		// Pause and resume on page becoming visible/invisible
+		function onVisibilityChanged() {
+			if (document.hidden || document.mozHidden || document.webkitHidden || document.msHidden)
+				cr_setSuspended(true);
+			else
+				cr_setSuspended(false);
+		};
+		
+		document.addEventListener("visibilitychange", onVisibilityChanged, false);
+		document.addEventListener("mozvisibilitychange", onVisibilityChanged, false);
+		document.addEventListener("webkitvisibilitychange", onVisibilityChanged, false);
+		document.addEventListener("msvisibilitychange", onVisibilityChanged, false);
+		
+		function OnRegisterSWError(e)
+		{
+			console.warn("Failed to register service worker: ", e);
+		};
+		
+		// Runtime calls this global method when ready to start caching (i.e. after startup).
+		// This registers the service worker which caches resources for offline support.
+		window.C2_RegisterSW = function C2_RegisterSW()
+		{
+			if (!navigator.serviceWorker)
+				return;		// no SW support, ignore call
+			
+			try {
+				navigator.serviceWorker.register("sw.js", { scope: "./" })
+				.then(function (reg)
+				{
+					console.log("Registered service worker on " + reg.scope);
+				})
+				.catch(OnRegisterSWError);
+			}
+			catch (e)
+			{
+				OnRegisterSWError(e);
+			}
+		};
+    </script>
+	<script src=""></script>
+ 
+
+<script>gadgets.util.runOnLoadHandlers();</script><script>window.google.csi.tickDl();
+</script></body></html>
+</style><style type="text/css">
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		html, body {
+			background: #000;
+			color: #fff;
+			overflow: hidden;
+			touch-action: none;
+			-ms-touch-action: none;
+		}
+		canvas {
+			touch-action-delay: none;
+			touch-action: none;
+			-ms-touch-action: none;
+		}
+		@font-face {
+		    font-family: Oswald Regular;
+		    src: url(https://26515722-282596139816136697.preview.editmysite.com/uploads/b/7547235-562404422326578714/files/oswald_regular.ttf);
+		}
+		html, body {
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	
+	background: #000000;
+}
+
+html, body, canvas {
+	touch-action: none;
+	touch-action-delay: none;
+}
+
+    </style>
+    <meta charset="UTF-8">
+	<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+	<title>Snake</title>
+	<meta content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" name="viewport">
+	
+	<!-- Allow fullscreen mode on iOS devices. (These are Apple specific meta tags.) -->
+	<meta content="true" name="HandheldFriendly">
+	
+	<!-- Chrome for Android web app tags -->
+	<meta content="yes" name="mobile-web-app-capable">
+	  
+
+
+
+    <!-- All margins and padding must be zero for the canvas to fill the screen. -->
+	
+	
+<script>
