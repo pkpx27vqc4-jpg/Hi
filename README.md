@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-      <base href = "https://cdn.jsdelivr.net/gh/CoolDude2349/everything@main/funnybattle/">
+      <base href = "https://cdn.jsdelivr.net/gh/CoolDude2349/everything@main/funnybattle2/">
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -25,14 +25,14 @@
     <script>
       const hideFullScreenButton = "1";
       const buildUrl = "Build";
-      const loaderUrl = buildUrl + "/FunnyBattle_GD.loader2test9.js";
+      const loaderUrl = buildUrl + "/FunnyBattle2_GD.loader-edit2.js";
       const config = {
-        dataUrl: buildUrl + "/FunnyBattle_GD.data.unityweb",
-        frameworkUrl: buildUrl + "/FunnyBattle_GD.framework.js.unityweb",
-        codeUrl: buildUrl + "/FunnyBattle_GD.wasm.unityweb",
+        dataUrl: buildUrl + "/FunnyBattle2_GD.data.unityweb",
+        frameworkUrl: buildUrl + "/FunnyBattle2_GD.framework.js.unityweb",
+        codeUrl: buildUrl + "/FunnyBattle2_GD.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "GoGoMan",
-        productName: "Funny Battle",
+        productName: "Squid Battle",
         productVersion: "0.1",
       };
 
@@ -63,7 +63,7 @@
         container.className = "unity-mobile";
         config.devicePixelRatio = 1;
       }
-      canvas.style.background = "url('" + buildUrl + "/FunnyBattle_GD.jpg') center / cover";
+      canvas.style.background = "url('" + buildUrl + "/FunnyBattle2_GD.jpg') center / cover";
       loadingCover.style.display = "";
 
       const script = document.createElement("script");
@@ -88,7 +88,6 @@
         });
       };
       document.body.appendChild(script);
-      
     </script>
   </body>
 </html>
